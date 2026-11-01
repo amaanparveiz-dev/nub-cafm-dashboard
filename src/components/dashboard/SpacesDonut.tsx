@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import useTooltip from '../../hooks/useTooltip';
 import type { CSSProperties, MouseEvent } from 'react';
+import { useLocale } from '../../context/LocaleContext';
 import type { SpaceSegment } from '../../types';
 import ChartTooltip from './ChartTooltip';
 
@@ -16,7 +17,6 @@ const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 const GAP = 6;
 const CAP = 8;
 
-/** Adds percentage and stroke-dash geometry to each segment. */
 function buildArcs(segments: SpaceSegment[]): { arcs: Arc[]; total: number } {
   const total = segments.reduce((sum, { count }) => sum + count, 0);
   const isSingle = segments.filter(({ count }) => count > 0).length === 1;
@@ -42,12 +42,15 @@ function buildArcs(segments: SpaceSegment[]): { arcs: Arc[]; total: number } {
 }
 
 export default function SpacesDonut({ segments }: { segments: SpaceSegment[] }) {
+  const { t } = useLocale();
   const { arcs, total } = buildArcs(segments);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const tooltip = useTooltip();
 
-  const hoverProps = ({ label, count, percent }: Arc, index: number) => {
-    const handlers = tooltip.bind(label, `${count} space${count === 1 ? '' : 's'} · ${percent}%`);
+  const hoverProps = ({ key, count, percent }: Arc, index: number) => {
+    const label = t(key);
+    const value = t(count === 1 ? 'space.tooltip' : 'space.tooltipPlural', { count, percent });
+    const handlers = tooltip.bind(label, value);
     return {
       ...handlers,
       onMouseEnter: (event: MouseEvent<Element>) => { handlers.onMouseEnter(event); setActiveIndex(index); },
@@ -58,11 +61,11 @@ export default function SpacesDonut({ segments }: { segments: SpaceSegment[] }) 
   return (
     <div className="sp">
       <div className={`sdn${activeIndex !== null ? ' hov' : ''}`}>
-        <svg viewBox="0 0 160 160" role="img" aria-label="Spaces by status">
+        <svg viewBox="0 0 160 160" role="img" aria-label={t('card.spacesByStatus')}>
           <circle className="trk" cx="80" cy="80" r={RADIUS} />
           {arcs.map((arc, index) => arc.dash && (
             <circle
-              key={arc.label}
+              key={arc.key}
               className={`seg${activeIndex === index ? ' hl' : ''}`}
               cx="80"
               cy="80"
@@ -76,19 +79,19 @@ export default function SpacesDonut({ segments }: { segments: SpaceSegment[] }) 
             />
           ))}
         </svg>
-        <div className="ctr"><b>{total}</b><small>Total</small></div>
+        <div className="ctr"><b>{total}</b><small>{t('space.total')}</small></div>
       </div>
 
       <div className="sleg">
         {arcs.map((arc, index) => (
           <div
-            key={arc.label}
+            key={arc.key}
             className={`r${arc.count ? '' : ' z'}${activeIndex === index ? ' hl' : ''}`}
             style={{ '--c': arc.color } as CSSProperties}
             {...hoverProps(arc, index)}
           >
             <i />
-            <span className="nm">{arc.label}</span>
+            <span className="nm">{t(arc.key)}</span>
             <b>{arc.count}</b>
             <em>{arc.percent}%</em>
           </div>

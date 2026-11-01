@@ -3,6 +3,7 @@ export const STORAGE_KEYS = {
   lock: 'nub-auth-lock',
   lastEmail: 'nub-last-email',
   layout: 'nub-overview-layout',
+  locale: 'nub-locale',
 } as const;
 
 export const AUTH_CONFIG = {

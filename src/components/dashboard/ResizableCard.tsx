@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import type { CSSProperties, KeyboardEvent, PointerEvent, ReactNode } from 'react';
+import { useLocale } from '../../context/LocaleContext';
 import type { CardSize } from '../../types';
 
 const COLUMNS = 12;
@@ -41,6 +42,7 @@ interface ResizableCardProps {
 export default function ResizableCard({
   id, defaultSpan, size = {}, className = '', onResize, onReset, children,
 }: ResizableCardProps) {
+  const { t } = useLocale();
   const cardRef = useRef<HTMLElement>(null);
   const [activeHandle, setActiveHandle] = useState<string | null>(null);
   const [dragLabel, setDragLabel] = useState<string | null>(null);
@@ -122,8 +124,8 @@ export default function ResizableCard({
       <button
         type="button"
         className="rzg"
-        aria-label="Resize card. Drag any edge or corner, or use arrow keys on this handle. Double-click to reset."
-        title="Drag to resize · double-click to reset"
+        aria-label={t('card.resize')}
+        title={t('card.resizeTitle')}
         onPointerDown={startResize('se')}
         onDoubleClick={() => onReset(id)}
         onKeyDown={handleGripKeyDown}

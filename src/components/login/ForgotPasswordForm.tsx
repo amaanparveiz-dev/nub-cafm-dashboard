@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
-import { MESSAGES } from '../../constants/messages';
 import { requestPasswordReset } from '../../services/authService';
+import { useLocale } from '../../context/LocaleContext';
 import type { BannerState } from '../../types';
 import { validateEmail } from '../../utils/validation';
 import Icon from '../common/Icon';
@@ -16,6 +16,7 @@ interface ForgotPasswordFormProps {
 type Status = 'idle' | 'busy' | 'sent';
 
 export default function ForgotPasswordForm({ initialEmail, onBack }: ForgotPasswordFormProps) {
+  const { t } = useLocale();
   const [email, setEmail] = useState(initialEmail);
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<Status>('idle');
@@ -31,7 +32,7 @@ export default function ForgotPasswordForm({ initialEmail, onBack }: ForgotPassw
     event.preventDefault();
     if (status === 'busy') return;
     const trimmedEmail = email.trim();
-    const validationError = validateEmail(trimmedEmail);
+    const validationError = validateEmail(trimmedEmail, t);
     setError(validationError);
     if (validationError) {
       emailRef.current?.focus();
@@ -45,23 +46,23 @@ export default function ForgotPasswordForm({ initialEmail, onBack }: ForgotPassw
       setStatus('sent');
     } catch {
       setStatus('idle');
-      setBanner({ type: 'error', message: MESSAGES.network });
+      setBanner({ type: 'error', message: t('error.network') });
     }
   }
 
   return (
     <section aria-labelledby="forgot-title">
-      <h1 id="forgot-title" ref={titleRef} tabIndex={-1}>Reset your password</h1>
-      <p className="lg-sub">Enter your work email and we’ll send you a link to choose a new password.</p>
+      <h1 id="forgot-title" ref={titleRef} tabIndex={-1}>{t('forgot.heading')}</h1>
+      <p className="lg-sub">{t('forgot.sub')}</p>
       <Banner banner={banner} />
 
       {status === 'sent' ? (
         <div className="sent">
           <div className="lg-note" role="status">
             <Icon name="check" className="lg-ic" />
-            <p>{MESSAGES.resetSent(email)}</p>
+            <p>{t('info.resetSent', { email })}</p>
           </div>
-          <button type="button" className="btn ghost" onClick={onBack}>Back to sign in</button>
+          <button type="button" className="btn ghost" onClick={onBack}>{t('forgot.back')}</button>
         </div>
       ) : (
         <form onSubmit={handleSubmit} noValidate>
@@ -75,10 +76,10 @@ export default function ForgotPasswordForm({ initialEmail, onBack }: ForgotPassw
           />
           <button className="btn primary" type="submit" aria-busy={status === 'busy'}>
             {status === 'busy' && <span className="spin" aria-hidden="true" />}
-            <span>{status === 'busy' ? 'Sending…' : 'Send reset link'}</span>
+            <span>{status === 'busy' ? t('forgot.sending') : t('forgot.send')}</span>
           </button>
           <p className="back">
-            <button type="button" className="link" onClick={onBack}>Back to sign in</button>
+            <button type="button" className="link" onClick={onBack}>{t('forgot.back')}</button>
           </p>
         </form>
       )}

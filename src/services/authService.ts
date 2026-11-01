@@ -33,13 +33,23 @@ export class AuthError extends Error {
 
 const wait = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
+function demoUser(): User {
+  const { name, nameAr, email } = DEMO_ACCOUNT;
+  return { name, nameAr, email };
+}
+
 export async function authenticate(email: string, password: string): Promise<User> {
   await wait(850);
   if (email.toLowerCase() === DEMO_ACCOUNT.email && password === DEMO_ACCOUNT.password) {
-    const { name, nameAr } = DEMO_ACCOUNT;
-    return { name, nameAr, email: DEMO_ACCOUNT.email };
+    return demoUser();
   }
   throw new AuthError('bad_credentials');
+}
+
+/** Mock Azure / Entra ID sign-in for the demo workspace. */
+export async function authenticateWithAzure(): Promise<User> {
+  await wait(900);
+  return demoUser();
 }
 
 /** Always resolves so the UI never reveals whether an account exists. */

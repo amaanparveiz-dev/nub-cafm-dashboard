@@ -35,7 +35,7 @@ export interface LoginLocationState {
 export type BarTone = 'in' | 'lt' | 'gy';
 
 export interface Bar {
-  label: string;
+  key: string;
   value: number;
   tone: BarTone;
 }
@@ -47,17 +47,16 @@ export interface Workspace {
 }
 
 export interface NavItem {
-  label: string;
+  id: 'overview' | 'assets' | 'maintenance' | 'softServices' | 'healthSafety' | 'visitors' | 'spaces' | 'property';
   icon: string;
   active?: boolean;
 }
 
 export interface Stat {
+  id: 'assets' | 'maintenance' | 'visitors' | 'softServices' | 'healthSafety' | 'spaces' | 'property';
   icon: string;
-  title: string;
   value: string;
   change: string;
-  caption: string;
   flat?: boolean;
 }
 
@@ -72,32 +71,39 @@ export interface RequestsCard {
   total: string;
   change: string;
   height: number;
-  unit: string;
+  unitKey: 'unit.requests';
   bars: Bar[];
 }
 
-export interface ChartCard extends CardHeaderInfo {
+export interface ChartCard {
   id: string;
+  titleKey: 'card.visitsByStatus' | 'card.jobOrders' | 'card.plansByStatus' | 'card.incidents';
+  subtitleKey: 'card.visitorManagement' | 'card.maintenance' | 'card.softServices' | 'card.healthSafety';
+  total: string;
+  change: string;
   height: number;
-  unit: string;
+  unitKey: 'unit.visits' | 'unit.jobOrders' | 'unit.plans' | 'unit.incidents';
   bars: Bar[];
   wide?: boolean;
   dense?: boolean;
 }
 
 export interface SpaceSegment {
-  label: string;
+  key: 'space.vacant' | 'space.partial' | 'space.occupied' | 'space.reserved' | 'space.utilities';
   count: number;
   color: string;
 }
 
-export interface SpacesCard extends CardHeaderInfo {
+export interface SpacesCard {
+  total: string;
+  change: string;
   segments: SpaceSegment[];
 }
 
 export interface Property {
   name: string;
-  detail: string;
+  rate: string;
+  amount: string;
   negative?: boolean;
 }
 
@@ -105,7 +111,7 @@ export interface Visit {
   initials: string;
   name: string;
   company: string;
-  purpose: string;
+  purposeKey: 'visits.purpose.demo' | 'visits.purpose.hvac' | 'visits.purpose.access' | 'visits.purpose.contract' | 'visits.purpose.lift' | 'visits.purpose.fire' | 'visits.purpose.space' | 'visits.purpose.pantry';
   time: string;
   date: string;
 }

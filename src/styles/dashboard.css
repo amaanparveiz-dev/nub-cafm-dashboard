@@ -5,7 +5,10 @@
 
 :root{--bg:#f4f4f2;--side:#f3f3f1;--card:#fff;--bd:#e5e5e3;--tx:#161616;--mu:#8a8a93;--in:#4638e0;--in2:#9aa7f7;--gy:#c5c4d0;--gr:#0f9d58;--sh:0 1px 2px rgba(20,20,43,.04),0 6px 18px rgba(20,20,43,.045);--sh2:0 2px 4px rgba(20,20,43,.05),0 14px 30px rgba(20,20,43,.10)}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:13px;display:flex;align-items:flex-start;min-height:100vh}
+body{font-family:Inter,"Noto Sans Arabic",system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:13px;display:flex;align-items:flex-start;min-height:100vh}
+html[dir=rtl] body,html[dir=rtl] .cf textarea,html[dir=rtl] .send,html[dir=rtl] .signout,html[dir=rtl] .att,html[dir=rtl] .hist{
+  font-family:"Noto Sans Arabic",Inter,system-ui,sans-serif;
+}
 /* Sidebar (fixed) */
 .sidebar{position:fixed;top:0;left:0;bottom:0;width:232px;background:var(--side);border-right:1px solid var(--bd);display:flex;flex-direction:column;padding:0 11px 12px;z-index:10}
 .brand{padding:30px 6px 26px;text-align:center}
@@ -328,5 +331,47 @@ body.chat-open .fab{opacity:0;pointer-events:none;transform:scale(.8)}
 .num.l+.cw{margin-top:6px}
 .rz .bt{margin-top:12px}
 .pr:last-child,.col3>.pc:last-child{margin:0}
+
+.topbar .lang{
+  background:#fff;border:1px solid var(--bd);border-radius:6px;padding:5px 10px;
+  font-size:12.5px;font-weight:500;cursor:pointer;color:#333;flex:none;
+}
+.topbar .lang:hover{background:#f7f7f6}
+
+html[dir=rtl] .sidebar{left:auto;right:0;border-right:0;border-left:1px solid var(--bd)}
+html[dir=rtl] .wrap{margin-left:0;margin-right:232px;transition:margin-right .3s ease-in-out}
+html[dir=rtl] .ws .ch,html[dir=rtl] .me .ch{margin-left:0;margin-right:auto}
+html[dir=rtl] .me{padding-left:0;padding-right:6px}
+html[dir=rtl] .sbox kbd{margin-left:0;margin-right:auto}
+html[dir=rtl] .ico{margin-left:0;margin-right:14px}
+html[dir=rtl] .stat{border-right:0;border-left:1px solid var(--bd)}
+html[dir=rtl] .stat:last-child{border:0}
+html[dir=rtl] .foot b{margin-left:0;margin-right:3px}
+html[dir=rtl] .foot .ic,html[dir=rtl] .signout svg{transform:scaleX(-1)}
+html[dir=rtl] .leg b{margin-left:0;margin-right:auto}
+html[dir=rtl] .num.l{text-align:right}
+html[dir=rtl] .sleg .r em{text-align:left}
+html[dir=rtl] .fab{right:auto;left:28px}
+html[dir=rtl] .rzg{right:auto;left:3px}
+html[dir=rtl] .rzg:before{right:auto;left:4px;transform:scaleX(-1)}
+html[dir=rtl] .rzlbl{right:auto;left:8px}
+html[dir=rtl] .hist{text-align:right}
+html[dir=rtl] .signout{text-align:right}
+html[dir=rtl] .nav a:not(.on):hover{transform:translateX(-2px)}
+html[dir=rtl] .chat{border-left:0;border-right:0 solid var(--bd);transition:flex-basis .3s ease-in-out,width .3s ease-in-out,border-right-width .3s ease-in-out,visibility .3s}
+html[dir=rtl] .chat.open{border-right-width:1px}
+html[dir=rtl] h1{letter-spacing:0}
+@media(max-width:1100px){
+  html[dir=rtl] .sidebar{transform:translateX(100%)}
+  html[dir=rtl] body.nav-open .sidebar{transform:none;box-shadow:-4px 0 24px rgba(0,0,0,.18)}
+  html[dir=rtl] .wrap{margin-right:0}
+}
+@media(max-width:700px){
+  html[dir=rtl] .fab{left:16px;right:auto}
+  html[dir=rtl] .chat,html[dir=rtl] .chat.wide{
+    right:auto;left:0;transform:translateX(-100%);box-shadow:8px 0 30px rgba(0,0,0,.15)
+  }
+  html[dir=rtl] .chat.open,html[dir=rtl] .chat.wide.open{transform:none}
+}
 
 

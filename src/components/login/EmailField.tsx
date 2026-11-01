@@ -1,4 +1,5 @@
 import type { RefObject } from 'react';
+import { useLocale } from '../../context/LocaleContext';
 
 interface EmailFieldProps {
   id: string;
@@ -11,9 +12,10 @@ interface EmailFieldProps {
 }
 
 export default function EmailField({ id, value, error, inputRef, autoComplete, onChange, onBlur }: EmailFieldProps) {
+  const { t } = useLocale();
   return (
     <div className="field">
-      <label htmlFor={id}>Email</label>
+      <label htmlFor={id}>{t('login.email')}</label>
       <input
         id={id}
         ref={inputRef}
@@ -23,7 +25,7 @@ export default function EmailField({ id, value, error, inputRef, autoComplete, o
         autoCapitalize="none"
         spellCheck={false}
         dir="ltr"
-        placeholder="name@company.com"
+        placeholder={t('login.emailPlaceholder')}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         onBlur={onBlur}

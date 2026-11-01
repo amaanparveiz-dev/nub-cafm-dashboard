@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { KeyboardEvent, RefObject } from 'react';
+import { useLocale } from '../../context/LocaleContext';
 import Icon from '../common/Icon';
 
 interface PasswordFieldProps {
@@ -10,6 +11,7 @@ interface PasswordFieldProps {
 }
 
 export default function PasswordField({ value, error, inputRef, onChange }: PasswordFieldProps) {
+  const { t } = useLocale();
   const [visible, setVisible] = useState(false);
   const [capsLockOn, setCapsLockOn] = useState(false);
 
@@ -21,7 +23,7 @@ export default function PasswordField({ value, error, inputRef, onChange }: Pass
 
   return (
     <div className="field">
-      <label htmlFor="password">Password</label>
+      <label htmlFor="password">{t('login.password')}</label>
       <div className="pw">
         <input
           id="password"
@@ -43,13 +45,13 @@ export default function PasswordField({ value, error, inputRef, onChange }: Pass
           className="eye"
           aria-pressed={visible}
           aria-controls="password"
-          aria-label={visible ? 'Hide password' : 'Show password'}
+          aria-label={visible ? t('login.hidePassword') : t('login.showPassword')}
           onClick={toggleVisible}
         >
           <Icon name={visible ? 'eyeOff' : 'eye'} className="lg-ic" />
         </button>
       </div>
-      {capsLockOn && <p className="hint" id="caps">Caps Lock is on.</p>}
+      {capsLockOn && <p className="hint" id="caps">{t('login.capsLock')}</p>}
       {error && <p className="err" id="pw-err">{error}</p>}
     </div>
   );

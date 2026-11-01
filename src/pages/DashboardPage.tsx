@@ -7,21 +7,22 @@ import Sidebar from '../components/dashboard/Sidebar';
 import StatsBar from '../components/dashboard/StatsBar';
 import Topbar from '../components/dashboard/Topbar';
 import { useRequiredUser } from '../context/AuthContext';
+import { useLocale } from '../context/LocaleContext';
 import { STATS } from '../data/dashboardData';
 import useCardLayout from '../hooks/useCardLayout';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import type { LoginLocationState } from '../types';
-import { getGreeting } from '../utils/format';
+import { displayName, getGreetingKey } from '../utils/format';
 import '../styles/dashboard.css';
 
 export default function DashboardPage() {
-  useDocumentTitle('NUB CAFM - Overview');
+  const { t, locale } = useLocale();
+  useDocumentTitle(t('dashboard.docTitle'));
   const { user, signOut } = useRequiredUser();
   const navigate = useNavigate();
   const [isNavOpen, setIsNavOpen] = useState(false);
   const cardLayout = useCardLayout();
 
-  // The stylesheet slides the sidebar in on small screens via a body class.
   useEffect(() => {
     document.body.classList.toggle('nav-open', isNavOpen);
     return () => document.body.classList.remove('nav-open');
@@ -42,14 +43,13 @@ export default function DashboardPage() {
         <main>
           <div className="ovh">
             <div>
-              <h1>Overview</h1>
+              <h1>{t('overview.heading')}</h1>
               <p className="lead">
-                {getGreeting()}, {user.name}
-                {user.nameAr && <> / <span className="ar" lang="ar">{user.nameAr}</span></>}. Here’s where to focus today.
+                {t('overview.hello', { greeting: t(getGreetingKey()), name: displayName(user, locale) })}
               </p>
             </div>
             <button className="rzreset" type="button" onClick={cardLayout.resetAll}>
-              <Icon name="reset" size={14} strokeWidth={2} /> Reset layout
+              <Icon name="reset" size={14} strokeWidth={2} /> {t('overview.resetLayout')}
             </button>
           </div>
 
